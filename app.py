@@ -4,7 +4,8 @@ import json
 import base64
 
 # --- 1. CONFIG & SECRETS ---
-TOKEN = "EAAbM7nxGOmABQVZBrZCIUn5vSFaEJP2HBqKB1AzNlTspMgzJPpX7ZC5nV3nuHXL9ZBr8LBZB98TB1ZBMvrpm5khngN2T0bNycOiEZCE5iYyQMJJlw6jICxEFnCOavSOXLxfrwluCqr2m0sHArwz2jvOFUywpNk5VgxZAdqC7uhwq1iE4W6xtUYIJNBj2DfVpnLb8"
+# Using your new token provided
+TOKEN = "EAAbM7nxGOmABQSSOWrscFznzbZBQnva0BkvJuX9qNzbPi2kX7VzDzCZBzGcPbktx1EM0tgPiZAkr7fFSphilcj1wZCWZBZA9OpTeZAsHr6jC3wvD5H00TLAmjowHVVcirZAZAvEWFe8WwLb7xufqwhElGifW9g5ePgPGB2MaxZBZAcZAhPiDvETTOnDUjkVcKhrE4QSBJKwIsZC2T80LEWnw7VMRWSv3faCqDoxbXJUqbzCltZBYxn5pNno1BkTybeRXQKkhaZCkZABczBjoMYwG3uWYx5zc"
 BIZ_ID = "17841410513221945"
 GH_RAW_URL = "https://raw.githubusercontent.com/pedduhudga/content-katte-bot/main/insta_db.json"
 GH_TOKEN = st.secrets["GITHUB_TOKEN"]
@@ -26,7 +27,7 @@ def sync_to_github(data):
     res = requests.get(url, headers=headers).json()
     sha = res.get('sha')
     content_base64 = base64.b64encode(json.dumps(data, indent=4).encode("utf-8")).decode("utf-8")
-    payload = {"message": "Update", "content": content_base64, "sha": sha if sha else None}
+    payload = {"message": "Update Automation", "content": content_base64, "sha": sha if sha else None}
     return requests.put(url, json=payload, headers=headers).status_code in [200, 201]
 
 if 'db' not in st.session_state:
@@ -60,7 +61,7 @@ else:
     if st.button("✅ Save & Sync to Bot"):
         db[tid] = {"keyword": kw.lower(), "message": msg, "status": "Active", "count": 0}
         if sync_to_github(db):
-            st.success("Synced!")
+            st.success("Synced to GitHub!")
             st.session_state['db'] = db
             del st.session_state['active_id']
             st.rerun()
